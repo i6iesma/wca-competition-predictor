@@ -36,41 +36,47 @@ def get_all_users(competition_id):
         this_user = User(name, wca_id)
         for event in events:
             #Find single
+            event_pb_single = ""
             cursor.execute("select best from RanksSingle where personId ='" + wca_id +  "' and eventId = '"+ event + "';")
-            exec("pb_single_" + event + " = str(cursor.fetchall())[2:][:-3]")
+            event_pb_single= str(cursor.fetchall())[2:][:-3]
             # #Some people may not have a result so this filters removing the entry completely
-            try:
-                exec("pb_single_" + event + "_int = int(pb_single_" + event + ")")
-            except ValueError:
-                #User does not have a result in this event
-                exec("if pb_single_"+ event + " == '': pb_single_" + event +  "= None")
+            if event_pb_single == '' :
                 continue
-                
-            exec("this_user.pb_single_" + event + " = pb_single_" + event + "_int") 
+            event_pb_single_int = int(event_pb_single)
+            exec("this_user.pb_single_" + event + " = " + str(event_pb_single_int))
+            exec("this_user.pb_single_" + event + " = " + "int(this_user.pb_single_" + event + ")")
             #Find avg 
             cursor.execute("select best from RanksAverage where personId ='" + wca_id +  "' and eventId = '"+ event + "';")
-            exec("pb_avg_" + event + " = str(cursor.fetchall())[2:][:-3]")
+            event_pb_avg = ""
+            event_pb_avg= str(cursor.fetchall())[2:][:-3]
             # #Some people may not have a result so this filters removing the entry completely
-            try:
-                exec("pb_avg_" + event + "_int = int(pb_avg_" + event + ")")
-            except ValueError:
-                exec("if pb_avg_"+ event + " == '': pb_avg_" + event +  "= None")
+            if event_pb_avg == '':
                 continue
-
-            exec("this_user.pb_avg_" + event + " = pb_avg_" + event + "_int") 
-        # print(this_user.name, this_user.pb_single_333, this_user.pb_single_444)
+            event_pb_avg_int = int(event_pb_single)
+            exec("this_user.pb_avg_" + event + " = " + str(event_pb_avg_int))
+            exec("this_user.pb_avg_" + event + " = " + "int(this_user.pb_avg_" + event + ")")
         users.append(this_user)
 
 
     return users
-
+def clean_0_users(users):
+    for i, o in enumerate(users):
+        if o.pb_single_333 == -1:
+            print("got to delete with user: " + o.name)
+            del users[i]
+            users.pop(i)
+    # print(users[0].pb_avg_333bf)
+    return users
+            
+    return users
 def sort_users(event, format, users):
     #Sort all of the users based on their pb results on the event specified
-    exec("users = [user for user in users if user.pb_" + format + "_" + event +" != 0]")
     exec("users.sort(key=lambda user: user.pb_" + format + "_" + event + ")")
     return users
 
-sorted_users = sort_users("333", "avg", get_all_users("GetafeContinua2023"))
-for user in sorted_users:
-    print(user.name, user.pb_avg_333)
+# sorted_users = sort_users("333", "avg", get_all_users("GetafeContinua2023"))
+all_users = sort_users("333", "single", clean_0_users(get_all_users("LazarilloOpen2023")))
 
+
+# for user in all_users:
+#     print(user.name, user.pb_single_333)

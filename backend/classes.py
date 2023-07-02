@@ -1,9 +1,29 @@
 class User:
     name = ""
     wca_id = ""
-    pb_single_333 = 0
-    pb_avg_333 = 0
-
+    pb_avg_333 = -1
+    pb_single_333 = -1
+    pb_single_333ft = 0
+    pb_avg_333ft = 0
+    pb_single_333mbf = 0
+    pb_single_333mbo = 0
+    pb_single_444bf = 0
+    pb_single_555bf = 0
+    pb_single_666 = 0
+    pb_single_777 = 0
+    pb_single_magic = 0
+    pb_single_minx = 0
+    pb_single_mmagic = 0
+    pb_single_sq1 = 0
+    pb_single_333bf = 0
+    pb_single_333fm = 0
+    pb_single_333oh = 0
+    pb_single_555 = 0
+    pb_single_444 = 0
+    pb_single_clock = -1
+    pb_single_pyram = -1
+    pb_single_skewb = -1
+    pb_single_222 = -1
     def __init__(self, name, wca_id ):
         self.name = name
         self.wca_id =wca_id
