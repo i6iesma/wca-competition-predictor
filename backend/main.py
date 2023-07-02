@@ -30,16 +30,41 @@ def get_all_users(competition_id):
 
         cursor.execute("select best from RanksSingle where personId ='" + wca_id +  "' and eventId = '333';")
         pb_single_333 = str(cursor.fetchall())[2:][:-3]
+        #Some people may not have a result so this filters removing the entry completely
+        if pb_single_333 == '':
+            continue
+        pb_single_333_int = int(float(pb_single_333))
 
         #FIND 333 PB AVG
         cursor.execute("select best from RanksAverage where personId ='" + wca_id +  "' and eventId = '333';")
         pb_avg_333 = str(cursor.fetchall())[2:][:-3]
+        #Some people may not have a result so this filters removing the entry completely
+        if pb_avg_333 == '':
+            continue
+        pb_single_333_int = int(float(pb_single_333))
+
+        pb_avg_333_int = int(pb_avg_333)
    
         #CREATE CLASS WITH INFO
-        users.append(User(name, wca_id, pb_single_333, pb_avg_333))
+        users.append(User(name, wca_id, pb_single_333_int, pb_avg_333_int))
 
 
     return users
 
+def sort_users(event, format, users):
+    #Sort all of the users based on their pb results on the event specified
+    if event == "333":
+        if format == "single":
+            users.sort(key=lambda user: user.pb_single_333)
+        if format == "avg":
+            users.sort(key=lambda user: user.pb_avg_333)
 
-print(get_all_users('GetafeContinua2023')[3].pb_single_333)
+    return users
+def sort_criteria(user):
+    return user.pb_single_333
+
+users_sorted = sort_users("333", "avg", get_all_users('LazarilloOpen2023'))
+
+for user in users_sorted:
+    print(user.name, user.pb_single_333, user.pb_avg_333)
+
