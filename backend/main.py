@@ -59,14 +59,6 @@ def get_all_users(competition_id):
 
 
     return users
-def clean_0_users(users):
-    for i, o in enumerate(users):
-        if o.pb_single_333 == -1:
-            print("got to delete with user: " + o.name)
-            del users[i]
-            users.pop(i)
-    # print(users[0].pb_avg_333bf)
-    return users
             
     return users
 def sort_users(event, format, users):
@@ -75,8 +67,8 @@ def sort_users(event, format, users):
     return users
 
 # sorted_users = sort_users("333", "avg", get_all_users("GetafeContinua2023"))
-all_users = sort_users("333", "single", clean_0_users(get_all_users("LazarilloOpen2023")))
+all_users = sort_users("333bf", "single", get_all_users("LazarilloOpen2023"))
 
 
-# for user in all_users:
-#     print(user.name, user.pb_single_333)
+for user in all_users:
+    print(user.name, user.pb_avg_222)
