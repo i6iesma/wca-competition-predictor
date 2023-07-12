@@ -49,26 +49,26 @@ def get_all_users(competition_id):
             cursor.execute("select best from RanksAverage where personId ='" + wca_id +  "' and eventId = '"+ event + "';")
             event_pb_avg = ""
             event_pb_avg= str(cursor.fetchall())[2:][:-3]
-            # #Some people may not have a result so this filters removing the entry completely
-            if event_pb_avg == '':
+            if event_pb_avg == '' :
                 continue
-            event_pb_avg_int = int(event_pb_single)
-            exec("this_user.pb_avg_" + event + " = " + str(event_pb_avg_int))
-            exec("this_user.pb_avg_" + event + " = " + "int(this_user.pb_avg_" + event + ")")
+            exec("this_user.pb_avg_" + event + " = " + str(event_pb_avg))
         users.append(this_user)
 
 
     return users
             
     return users
+
+
 def sort_users(event, format, users):
     #Sort all of the users based on their pb results on the event specified
     exec("users.sort(key=lambda user: user.pb_" + format + "_" + event + ")")
     return users
 
+        
 # sorted_users = sort_users("333", "avg", get_all_users("GetafeContinua2023"))
-all_users = sort_users("333bf", "single", get_all_users("LazarilloOpen2023"))
+all_users = sort_users("333", "single", get_all_users("LazarilloOpen2023"))
 
 
 for user in all_users:
-    print(user.name, user.pb_avg_222)
+    print(user.name, user.pb_single_333)
