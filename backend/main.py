@@ -56,10 +56,35 @@ def sort_users(users):
         ranking = ranking + 1
         user["ranking"] = ranking
     return users 
+
+def fix_centiseconds(users):
+    #TODO Add exceptions to multiblind and similar categories
+    #This function will change the centiseconds format to a minutes/seconds/centiseconds format
+    for user in users:
+        cs_pb = user["event_pb"] 
+        seconds = cs_pb / 100
+            
+        minutes = seconds // 60
+        remainder_seconds = seconds - (60*minutes)
+        print(int(minutes))
+        if int(minutes) == 0:
+            user["event_pb"] = remainder_seconds 
+        else:
+            #Sometimes python has a weird thing where it adds many decimals so this rounds it
+            if len(str(remainder_seconds)) > 5:
+                remainder_seconds = round(remainder_seconds, 2)
+            final_str = str(int(minutes)) + ":" + str(remainder_seconds)
+            user["event_pb"] = final_str
+    return users
+            
+
+
 def main(competition_id, event, format):
     users = get_all_users(competition_id, event, format)
-    sorted_users = sort_users(users)
-    for user in sorted_users:
+    users = sort_users(users)
+    users = fix_centiseconds(users) 
+    for user in users:
         print(user["event_pb"])
-    return sorted_users
+    return users 
 
+main("LazarilloOpen2023", "444", "single")
