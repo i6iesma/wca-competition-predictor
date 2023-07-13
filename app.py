@@ -16,19 +16,12 @@ def competition_ranking():
     #Get the users from the backend
     #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
     competition_id = str(url).strip("https://www.worldcubeassociation.org/competitions/")
-    #sort users based on event and format
-    users = backend.sort_users(event, format, backend.get_all_users(competition_id))
+    #Get all the users already sorted
+    users = backend.main(competition_id, event, format)
+    len_users = len(users)
      
-    pbs = []
-    names = []
-    #Filter the pbs that are -1 becouse they have not competed in that event
-    for user in users:
-        print(user.pb_avg_333, user.name)    
-        exec("if user.pb_" + format + "_" + event + " != -1: pbs.append(user.pb_" + format + "_" + event + ")")
-        exec("if user.pb_" + format + "_" + event + " != -1: names.append(user.name)")
 
-    users_len = len(pbs)
-    return render_template('competition_ranking.html', names=names, pbs=pbs, event=event, format=format,   users_len=users_len)
+    return render_template('competition_ranking.html', users=users, event=event, format=format, len_users=len_users)
 
 
 if __name__ == "__main__":

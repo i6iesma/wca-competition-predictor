@@ -6,13 +6,15 @@
     <th>Name</th>
     <th>Pb of {{event}} in {{format}}</th>
    </tr> 
-   {% for i in range(0, users_len) %}
-        <tr>
-            <th>{{i + 1}}
-            <th>{{names[i]}}</th>
-            <th>{{pbs[i]}}</th>
-        </tr>
-    {% endfor %}
+   {% for user in users %}
+    <tr>
+        <th>{{ user["ranking"] }}</th>
+        <th>{{ user["name"] }}</th>
+        <th>{{ user["event_pb"] }}</th>
+
+    </tr>
+
+   {% endfor %}
 
 </table>
 {% endblock %}

@@ -1,5 +1,4 @@
 import mysql.connector as connector
-from classes import User
 #Connection with the db named wca_dev
 connection = connector.connect(
     host = "localhost",
@@ -9,66 +8,58 @@ connection = connector.connect(
 #Commands in order to use wca_dev db
 cursor = connection.cursor(buffered=True)
 cursor.execute("use wca_dev")
-#Get all of the events from the database
-cursor.execute("select id from Events;")
-events = []
-for event in list(cursor.fetchall()):
-    events.append(str(event)[2:][:-3])
 
 
-
-def get_all_users(competition_id):
-    #Get all of the people ids on a give competition
+def get_all_users(competition_id, event, format):
+    #Get all the people ids
+    
     get_users_ids_query = "SELECT user_id FROM registrations WHERE competition_id ='" + competition_id + "' AND accepted_at IS NOT NULL AND deleted_at IS NULL;"
     cursor.execute(get_users_ids_query)
     users_ids = cursor.fetchall()
     users = []
-    for id in users_ids:
-        str_id = (str(id)[:-2][1:])
-        #FIND NAME
-
+    for user_id in users_ids:
+        str_id = (str(user_id)[:-2][1:])
+        
+        #Find names
         cursor.execute("select name from users where id='" + str_id + "'")
         name = str(cursor.fetchall())[3:][:-4]
-        #FIND WCAID
-
+        #Find wca_ids 
         cursor.execute("select wca_id from users where id='" + str_id + "'")
         wca_id = str(cursor.fetchall())[3:][:-4]
-        this_user = User(name, wca_id)
-        for event in events:
-            #Find single
-            event_pb_single = ""
+        #Find pb single at the event and format specified
+        if format == "single":
             cursor.execute("select best from RanksSingle where personId ='" + wca_id +  "' and eventId = '"+ event + "';")
-            event_pb_single= str(cursor.fetchall())[2:][:-3]
-            # #Some people may not have a result so this filters removing the entry completely
-            if event_pb_single == '' :
-                continue
-            event_pb_single_int = int(event_pb_single)
-            exec("this_user.pb_single_" + event + " = " + str(event_pb_single_int))
-            exec("this_user.pb_single_" + event + " = " + "int(this_user.pb_single_" + event + ")")
-            #Find avg 
+            event_pb_format= str(cursor.fetchall())[2:][:-3]
+        elif format == "avg":
             cursor.execute("select best from RanksAverage where personId ='" + wca_id +  "' and eventId = '"+ event + "';")
-            event_pb_avg = ""
-            event_pb_avg= str(cursor.fetchall())[2:][:-3]
-            if event_pb_avg == '' :
-                continue
-            exec("this_user.pb_avg_" + event + " = " + str(event_pb_avg))
-        users.append(this_user)
-
-
-    return users
-            
-    return users
-
-
-def sort_users(event, format, users):
-    #Sort all of the users based on their pb results on the event specified
-    exec("users.sort(key=lambda user: user.pb_" + format + "_" + event + ")")
-    return users
+            event_pb_format= str(cursor.fetchall())[2:][:-3]
+        #Filter out people without a result
+        if event_pb_format != '':
+            #Save the user as a dictionary
+            user = {
+            "name": name,
+            "wca_id": wca_id,
+            "event_pb": int(event_pb_format),
+            #Ranking is set to 1 temporarely so that it is changed later in sort_users()
+            "ranking": 1
+            }
+            users.append(user)
 
         
-# sorted_users = sort_users("333", "avg", get_all_users("GetafeContinua2023"))
-all_users = sort_users("333", "single", get_all_users("LazarilloOpen2023"))
+    return users 
 
+def sort_users(users):
+    users.sort(key=lambda user: user["event_pb"])
+    #Set ranking now so that it is according to the sorted list
+    ranking = 0
+    for user in users:
+        ranking = ranking + 1
+        user["ranking"] = ranking
+    return users 
+def main(competition_id, event, format):
+    users = get_all_users(competition_id, event, format)
+    sorted_users = sort_users(users)
+    for user in sorted_users:
+        print(user["event_pb"])
+    return sorted_users
 
-for user in all_users:
-    print(user.name, user.pb_single_333)
