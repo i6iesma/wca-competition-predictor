@@ -1,4 +1,61 @@
-p {
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  text-align: center;
+  background-color: #f2c185;
+}
+div.title-box {
+  padding-top: 30px;
+  background-color: #0d1e40;
+  color: white;
+}
+div.title-text {
+  padding-bottom: 30px;
+}
+div.form {
+  background-color: #5b9ea6;
+  color: white;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+div.form label {
+  font-size: 18px;
+}
+div.form input {
+  width: 40%;
+  padding: 5px;
+}
+input[type="submit"] {
+  border: 0px;
+  color: white;
+  font-size: 40px;
+  background-color: #e27d69;
+}
+div.form select {
+  width: 40%;
+  padding: 5px;
+}
+table,
+td,
+th {
+  border-collapse: collapse;
+  border: 1px solid;
+  border-color: black;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th {
   font-size: 20px;
-  color: blue;
+  color: #0d1e40;
+}
+th.th-ranking {
+  width: 30%;
+}
+th.th-name {
+  width: 40%;
 }

@@ -1,8 +1,15 @@
 {% extends "base.html" %}
     
 {% block body %}
-<label>Select the event you want to rank the competitors</label>
-<select name="event" form="event_form">
+<div class=form>
+    <form id="event-form" method="post" action="/">
+    <label>Enter the wca competition url</label> 
+    <br>
+            <input type="text" name='url'></input><br>
+            <br></br>
+<label class=event-form>Select the event you want to rank the competitors</label>
+<br>
+<select name="event" form="event-form">
   <option value="333" >3x3x3</option>
   <option value="222">2x2x2</option>
   <option value="444">4x4x4</option>
@@ -22,18 +29,39 @@
   <option value="333mbf">3x3x3 Multiblind</option>
 </select>
 <br />
-<label>Select the format you want to rank the competitors on</label>
-<select name="format" form="event_form">
+<br></br>
+<label class=event-form>Select the format you want to rank the competitors on</label>
+<br>
+<select name="format" form="event-form">
   <option value="single">Single</option>
   <option value="avg">Average</option>
 </select>
-<form id="event_form" method="post" action="/competition_ranking"
-    <label>Enter the wca competition url</label> 
-            <input type="text" name='url'></input><br>
-            <input type="submit" value="Go!" </input>
+<br></br>
+    <input type="submit" value="Go!"> </input>
         </form>
+    </div>
+<br></br>
+
+<div class=div-table>
+<table>
+   <tr>
+       <th class=th-ranking>Estimated position in event</th>
+    <th class=th-name>Name</th>
+    <th class=th-pb>Pb of {{event}} in {{format}}</th>
+   </tr> 
+   {% for user in users %}
+    <tr>
+        <th class=th-ranking>{{ user["ranking"] }}</th>
+        <th class=th-name>{{ user["name"] }}</th>
+        <th class=th-pb>{{ user["event_pb"] }}</th>
+
+    </tr>
+
+   {% endfor %}
+
+</table>
 {% endblock %}
 
 
 
-    </body>
+
