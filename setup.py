@@ -1,7 +1,7 @@
-import update_db
 import subprocess
 def main():
     install_requirements()
+    import update_db
     update_db.main()
 
 
