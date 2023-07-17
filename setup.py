@@ -7,7 +7,8 @@ def main():
 
 def install_requirements():
     subprocess.run(["pip install -r requirements.txt"])
-    
+
+main()
 
 
 
