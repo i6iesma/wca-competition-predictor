@@ -15,9 +15,15 @@ def main():
 
 def import_to_mysql():
     commands = [
-        "pv databases/wca-developer-database-dump.sql | mysql -u inigo -p123456 wca_dev"
+        "pv",
+        "databases/wca-developer-database-dump.sql",
+        "|",
+        "mysql",
+        "-u inigo",
+        "-p123456",
+        "wca_dev"
     ]
-    subprocess.run(commands)
+    subprocess.run(commands, shell=True)
     
 
 
