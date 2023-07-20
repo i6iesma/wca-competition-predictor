@@ -3,7 +3,7 @@ import mysql.connector as connector
 connection = connector.connect(
     host = "localhost",
     user = "inigo",
-    password = "123456"
+    password = "inigo"
 )
 #Commands in order to use wca_dev db
 cursor = connection.cursor(buffered=True)
