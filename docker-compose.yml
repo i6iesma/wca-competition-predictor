@@ -1,0 +1,16 @@
+services:
+  mydb:
+    build: ./mydb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+    ports:
+      - "3306:3306"
+  python-app:
+    build: ./python-app
+    ports:
+      - "8000:5000"
+    depends_on:
+      - mydb
+    links:
+      - mydb
