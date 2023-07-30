@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request
-import sys
-sys.path.insert(1, './backend')
-import main as backend
+import backend.main as backend
 app = Flask(__name__)
 
 @app.route('/', methods=["POST", "GET"])

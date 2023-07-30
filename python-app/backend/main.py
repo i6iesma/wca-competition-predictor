@@ -1,9 +1,9 @@
 import mysql.connector as connector
 #Connection with the db named wca_dev
 connection = connector.connect(
-    host = "localhost",
+    host = "127.0.0.1",
     user = "inigo",
-    password = "inigo"
+    password = "123456"
 )
 #Commands in order to use wca_dev db
 cursor = connection.cursor(buffered=True)
@@ -88,3 +88,4 @@ def main(competition_id, event, format):
     return users 
 
 main("LazarilloOpen2023", "444", "single")
+
