@@ -3,7 +3,7 @@ import sys
 sys.path.insert(1, './backend')
 import main as backend
 app = Flask(__name__)
-
+application = app
 @app.route('/', methods=["POST", "GET"])
 def index():
     if request.method == "GET":

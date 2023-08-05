@@ -13,8 +13,7 @@ cursor.execute("use wca_dev")
 def get_all_users(competition_id, event, format):
     # Get all the people ids
 
-    get_users_ids_query = "SELECT user_id FROM registrations WHERE competition_id ='" + \
-        competition_id + "' AND accepted_at IS NOT NULL AND deleted_at IS NULL;"
+    get_users_ids_query = "SELECT user_id FROM registrations WHERE competition_id ='%(competition_id)s' AND accepted_at IS NOT NULL AND deleted_at IS NULL;"
     cursor.execute(get_users_ids_query)
     users_ids = cursor.fetchall()
     users = []
@@ -30,11 +29,11 @@ def get_all_users(competition_id, event, format):
         # Find pb single at the event and format specified
         if format == "single":
             cursor.execute("select best from RanksSingle where personId ='" +
-                           wca_id + "' and eventId = '" + event + "';")
+                           wca_id + "' and eventId = '%(event)s';")
             event_pb_format = str(cursor.fetchall())[2:][:-3]
         elif format == "avg":
             cursor.execute("select best from RanksAverage where personId ='" +
-                           wca_id + "' and eventId = '" + event + "';")
+                           wca_id + "' and eventId = '%(event)s';")
             event_pb_format = str(cursor.fetchall())[2:][:-3]
         # Filter out people without a result
         if event_pb_format != '':
