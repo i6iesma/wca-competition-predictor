@@ -1,20 +1,11 @@
 import mysql.connector as connector
-# Connection with the db named wca_dev
-connection = connector.connect(
-    host="localhost",
-    user="inigo",
-    password="inigo"
-)
-# Commands in order to use wca_dev db
-cursor = connection.cursor(buffered=True)
-cursor.execute("use wca_dev")
 
 
-def get_all_users(competition_id, event, format):
+
+def get_all_users(competition_id, event, format, cursor):
     # Get all the people ids
 
-    get_users_ids_query = "SELECT user_id FROM registrations WHERE competition_id ='%(competition_id)s' AND accepted_at IS NOT NULL AND deleted_at IS NULL;"
-    cursor.execute(get_users_ids_query)
+    cursor.execute("SELECT user_id FROM registrations WHERE competition_id=%(competition_id)s AND accepted_at IS NOT NULL AND deleted_at IS NULL;", {'competition_id' : competition_id})
     users_ids = cursor.fetchall()
     users = []
     for user_id in users_ids:
@@ -28,12 +19,12 @@ def get_all_users(competition_id, event, format):
         wca_id = str(cursor.fetchall())[3:][:-4]
         # Find pb single at the event and format specified
         if format == "single":
-            cursor.execute("select best from RanksSingle where personId ='" +
-                           wca_id + "' and eventId = '%(event)s';")
+            cursor.execute("select best from RanksSingle where personId='" +
+                           wca_id + "' and eventId=%(event)s;", {'event' : event})
             event_pb_format = str(cursor.fetchall())[2:][:-3]
         elif format == "avg":
-            cursor.execute("select best from RanksAverage where personId ='" +
-                           wca_id + "' and eventId = '%(event)s';")
+            cursor.execute("select best from RanksAverage where personId='" +
+                           wca_id + "' and eventId=%(event)s;", {'event' : event})
             event_pb_format = str(cursor.fetchall())[2:][:-3]
         # Filter out people without a result
         if event_pb_format != '':
@@ -82,11 +73,22 @@ def fix_centiseconds(users):
 
 
 def main(competition_id, event, format):
-    users = get_all_users(competition_id, event, format)
+    # Connection with the db named wca_dev
+    connection = connector.connect(
+    host="localhost",
+    user="inigo",
+    password="inigo"
+    )
+    # Commands in order to use wca_dev db
+    cursor = connection.cursor(buffered=True)
+    cursor.execute("use wca_dev")
+    users = get_all_users(competition_id, event, format, cursor)
     users = sort_users(users)
     users = fix_centiseconds(users)
     for user in users:
         print(user["event_pb"])
+    #Close the connection
+    connection.close()
     return users
 
 

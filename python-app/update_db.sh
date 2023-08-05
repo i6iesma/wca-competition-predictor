@@ -9,4 +9,5 @@ rm wca-developer-database-dump.zip
 echo "download finished, starting import to database, this might take a while"
 mysql -u inigo -pinigo wca_dev < databases/wca-developer-database-dump.sql
 echo "import finished, exited successfully"
+rm databases/*.sql
 
