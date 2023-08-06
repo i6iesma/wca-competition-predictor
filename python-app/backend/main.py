@@ -1,4 +1,5 @@
 import mysql.connector as connector
+import datetime
 
 
 
@@ -51,13 +52,19 @@ def sort_users(users):
     return users
 
 
-def fix_centiseconds(users):
-    # TODO Add exceptions to multiblind and similar categories
+def fix_centiseconds(users, event):
     # This function will change the centiseconds format to a minutes/seconds/centiseconds format
+    if event == "333mbf":
+        multiblind_formatting(users, event)
+        return users
+    if event == "333fm":
+        return users
+
     for user in users:
         cs_pb = user["event_pb"]
-        seconds = cs_pb / 100
+            
 
+        seconds = cs_pb / 100
         minutes = seconds // 60
         remainder_seconds = seconds - (60*minutes)
         print(int(minutes))
@@ -70,6 +77,36 @@ def fix_centiseconds(users):
             final_str = str(int(minutes)) + ":" + str(remainder_seconds)
             user["event_pb"] = final_str
     return users
+def multiblind_formatting(users, event):
+    multiblind = "333mbf"
+    for user in users:
+        result = str(user["event_pb"])
+        # new: DDTTTTTMM
+         # difference    = 99 - DD
+         # timeInSeconds = TTTTT (99999 means unknown)
+         # missed        = MM
+         # solved        = difference + missed
+         # attempted     = solved + missed
+        #This is an example of how data is showed 36/38 58:23 	
+        #I only extract solved attempted and time in seconds becouse
+        #is the only thing needed to show like in wca website
+        difference = str(99 - int(result[:2]))
+        time_in_seconds = str(result[2:][:-2])
+        time_in_minutes_and_seconds = str(datetime.timedelta(seconds = int(time_in_seconds)))
+        missed = str(result[7:])
+        solved = str(int(difference) + int(missed))
+        attempted = str(int(solved) +int(missed))
+        formatted_result = solved + "/" + attempted + " " + time_in_minutes_and_seconds
+        user["event_pb"] = formatted_result
+
+            
+
+            
+            
+            
+    return users
+
+            
 
 
 def main(competition_id, event, format):
@@ -84,7 +121,7 @@ def main(competition_id, event, format):
     cursor.execute("use wca_dev")
     users = get_all_users(competition_id, event, format, cursor)
     users = sort_users(users)
-    users = fix_centiseconds(users)
+    users = fix_centiseconds(users, event)
     for user in users:
         print(user["event_pb"])
     #Close the connection
@@ -92,4 +129,4 @@ def main(competition_id, event, format):
     return users
 
 
-main("LazarilloOpen2023", "444", "single")
+main("LazarilloOpen2023", "333mbf", "single")
