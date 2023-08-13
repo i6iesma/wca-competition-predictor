@@ -7,6 +7,12 @@
     <br>
             <input type="text" name='url'></input><br>
             <br></br>
+<label>Select the mode you want to rank the competitors on </label>
+<br>
+<select name="mode" form="event-form">
+    <option value="pb" >By PB on the event specified</option>
+</select>
+<br></br>
 <label class=event-form>Select the event you want to rank the competitors</label>
 <br>
 <select name="event" form="event-form">
@@ -53,7 +59,7 @@
     <tr>
         <th class=th-ranking>{{ user["ranking"] }}</th>
         <th class=th-name>{{ user["name"] }}</th>
-        <th class=th-pb>{{ user["event_pb"] }}</th>
+        <th class=th-pb>{{ user["result"] }}</th>
 
     </tr>
 

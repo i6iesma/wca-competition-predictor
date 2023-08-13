@@ -12,12 +12,13 @@ def index():
         url = request.form.get('url')
         format = request.form.get('format')
         event = request.form.get('event')
+        mode = request.form.get('mode')
         print("event is " + str(event))
         #Get the users from the backend
         #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
         competition_id = str(url).strip("https://www.worldcubeassociation.org/competitions/")
         #Get all the users already sorted
-        users = backend.main(competition_id, event, format)
+        users = backend.main(competition_id, event, format, mode) 
         len_users = len(users)
         return render_template('index.html', users=users, event=event, format=format, len_users=len_users)
 
@@ -32,7 +33,7 @@ def competition_ranking():
     #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
     competition_id = str(url).strip("https://www.worldcubeassociation.org/competitions/")
     #Get all the users already sorted
-    users = backend.main(competition_id, event, format)
+    users = backend.main(competition_id, event, format, "pb")
     len_users = len(users)
      
 
