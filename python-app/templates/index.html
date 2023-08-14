@@ -6,11 +6,12 @@
     <label>Enter the wca competition url</label> 
     <br>
             <input type="text" name='url'></input><br>
-            <br></br>
+            </br>
 <label>Select the mode you want to rank the competitors on </label>
 <br>
 <select name="mode" form="event-form">
     <option value="pb" >By PB on the event specified</option>
+    <option value="average_of_last_comp_averages" >By the average of all of the averages in the last competition </option>
 </select>
 <br></br>
 <label class=event-form>Select the event you want to rank the competitors</label>
@@ -46,14 +47,13 @@
     <input type="submit" value="Go!"> </input>
         </form>
     </div>
-<br></br>
 
 <div class=div-table>
 <table>
    <tr>
        <th class=th-ranking>Estimated position in event</th>
     <th class=th-name>Name</th>
-    <th class=th-pb>Pb of {{event}} in {{format}}</th>
+    <th class=th-pb>Result according to the mode specified<th>
    </tr> 
    {% for user in users %}
     <tr>
