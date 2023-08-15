@@ -7,12 +7,14 @@ application = app
 @app.route('/', methods=["POST", "GET"])
 def index():
     if request.method == "GET":
-        return render_template('index.html', users=[], event="", format="", len_users = 0)
+        return render_template('index.html', users=[], event="", format="", len_users = 0,  url="")
     elif request.method == "POST":
+
         url = request.form.get('url')
         format = request.form.get('format')
         event = request.form.get('event')
         mode = request.form.get('mode')
+        #Set the text on the fields and dropdowns to the option
         print("event is " + str(event))
         #Get the users from the backend
         #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
@@ -20,7 +22,7 @@ def index():
         #Get all the users already sorted
         users = backend.main(competition_id, event, format, mode) 
         len_users = len(users)
-        return render_template('index.html', users=users, event=event, format=format, len_users=len_users)
+        return render_template('index.html', users=users, event=event, format=format, len_users=len_users, url=url, mode=mode)
 
         
 
