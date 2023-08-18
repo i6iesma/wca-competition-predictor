@@ -118,11 +118,13 @@ def fix_centiseconds(users, event):
         seconds = int(cs_pb) / 100
         minutes = seconds // 60
         remainder_seconds = seconds - (60*minutes)
+        # Sometimes python has a weird thing where it adds many decimals so this rounds it
+        if len(str(remainder_seconds)) > 5:
+            remainder_seconds = round(remainder_seconds, 2)
+
         if int(minutes) == 0:
-            # Sometimes python has a weird thing where it adds many decimals so this rounds it
-            if len(str(remainder_seconds)) > 5:
-                remainder_seconds = round(remainder_seconds, 2)
             final_str = str(remainder_seconds)
+
         else:
             final_str = str(int(minutes)) + ":" + str(remainder_seconds)
         user["result"] = final_str
