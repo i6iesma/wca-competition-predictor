@@ -31,8 +31,7 @@ def get_all_users(competition_id,  cursor):
         }
         users.append(user)
     return users
-
-def get_average_of_last_comp_averages(users, event, format, competitionId, cursor):
+def get_smart_prediction(users, event, format, competitionId, cursor):
     new_users = []
     for user in users:
         #First get the last competition the competitor competed in that event
@@ -174,8 +173,8 @@ def main(competitionId, event, format, mode):
     users = get_all_users(competitionId, cursor)
     if mode == "pb":
         users = get_pb(users, event, format, cursor)
-    elif mode == "average_of_last_comp_averages":
-        users = get_average_of_last_comp_averages(users, event, format, competitionId, cursor)
+    elif mode == "smart_prediction":
+        users = get_smart_prediction(users, event, format, competitionId, cursor)
     users = sort_users(users)
     users = fix_centiseconds(users, event)
     # Close the connection
