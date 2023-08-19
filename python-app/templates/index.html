@@ -9,7 +9,7 @@
             </br>
 <label>Select the mode you want to rank the competitors on </label>
 <br>
-<select name="mode" form="event-form">
+<select id="mode-dropdown" name="mode" form="event-form">
     <option value="pb" {% if mode == "pb" %} selected  {% endif %}>By PB on the event specified </option>
     <option value="smart_prediction" {% if mode == "smart_prediction" %} selected  {% endif %}>By a smart prediction</option>
 </select>
@@ -50,23 +50,31 @@
     </div>
 
 <div class=div-table>
-<table>
+<table id="table-id">
    <tr>
        <th class=th-ranking>Estimated position in event</th>
     <th class=th-name>Name</th>
-    <th class=th-pb>Result according to the mode specified<th>
+    <th   class=th-pb>
+        <button id="buttonLeft" class="image-button" type="button"><img class="img-arrow" src="/static/arrow-left.png" alt=""> </button>
+        <p id=mode-describer>{{mode_text}}</p>
+        <button id="buttonRight" class="image-button" type="button"><img class="img-arrow" src="/static/arrow-right.png" alt=""></button>
+            </th>
+            <th></th>
    </tr> 
    {% for user in users %}
     <tr>
         <th class=th-ranking>{{ user["ranking"] }}</th>
         <th class=th-name>{{ user["name"] }}</th>
         <th class=th-pb>{{ user["result"] }}</th>
-
     </tr>
 
    {% endfor %}
 
 </table>
+
+<p id="jsonified_pb_users" hidden> {{ jsonified_pb_users }}
+<p id="jsonified_smart_prediction_users" hidden> {{ jsonified_smart_prediction_users }}
+<p id="mode_p">{{mode}}</p>
 {% endblock %}
 
 

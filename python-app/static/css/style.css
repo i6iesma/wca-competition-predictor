@@ -59,3 +59,11 @@ th.th-ranking {
 th.th-name {
   width: 40%;
 }
+img.img-arrow {
+  width: 10px;
+  height: 10px;
+}
+button.image-button {
+  background-color: transparent;
+  border: 0px;
+}

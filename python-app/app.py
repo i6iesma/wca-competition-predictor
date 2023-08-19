@@ -1,9 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
+import json
 import sys
 sys.path.insert(1, './backend')
 import main as backend
 app = Flask(__name__)
 application = app
+
+class AllUsers():
+    pb_users = []
+    smart_prediction_users = []
+    def __init__(self, pb_users, smart_prediction_users) -> None:
+        self.pb_users = pb_users
+        self.smart_prediction_users = smart_prediction_users
+current_users = AllUsers([], [])
 @app.route('/', methods=["POST", "GET"])
 def index():
     if request.method == "GET":
@@ -20,27 +29,19 @@ def index():
         #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
         competition_id = str(url).strip("https://www.worldcubeassociation.org/competitions/")
         #Get all the users already sorted
-        users = backend.main(competition_id, event, format, mode) 
-        len_users = len(users)
-        return render_template('index.html', users=users, event=event, format=format, len_users=len_users, url=url, mode=mode)
+        pb_users, smart_prediction_users = backend.main(competition_id, event, format) 
+        if mode == "pb":
+            mode_text = "By PB on the event specified"
+            users = pb_users
+        else:
+            mode_text = "By a smart prediction"
+            users = smart_prediction_users
+        #This is a very cheap trick which basically I take all of the user data that I need in 
+        #The javascript and place it in a hidden paragraph at the end of the page so js can access it
+        jsonified_pb_users = json.dumps(pb_users, indent=2)
+        jsonified_smart_prediction_users = json.dumps(smart_prediction_users, indent=2)
+        return render_template('index.html',users=users,  mode_text=mode_text,event=event, format=format, url=url, mode=mode, jsonified_pb_users=jsonified_pb_users, jsonified_smart_prediction_users=jsonified_smart_prediction_users)
 
         
-
-@app.route("/competition_ranking", methods=["POST", "GET"])
-def competition_ranking():
-    url = request.form.get('url')
-    format = request.form.get('format')
-    event = request.form.get('event')
-    #Get the users from the backend
-    #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
-    competition_id = str(url).strip("https://www.worldcubeassociation.org/competitions/")
-    #Get all the users already sorted
-    users = backend.main(competition_id, event, format, "pb")
-    len_users = len(users)
-     
-
-    return render_template('competition_ranking.html', users=users, event=event, format=format, len_users=len_users)
-
-
 if __name__ == "__main__":
     app.run(debug=True)
