@@ -7,14 +7,7 @@
     <br>
     <input type="text" value="{{ url }}" name='url'></input><br>
             </br>
-<label>Select the mode you want to rank the competitors on </label>
-<br>
-<select id="mode-dropdown" name="mode" form="event-form">
-    <option value="pb" {% if mode == "pb" %} selected  {% endif %}>By PB on the event specified </option>
-    <option value="smart_prediction" {% if mode == "smart_prediction" %} selected  {% endif %}>By a smart prediction</option>
-</select>
 
-<br></br>
 <label class=event-form>Select the event you want to rank the competitors</label>
 <br>
 <select name="event" form="event-form">
@@ -61,7 +54,7 @@
             </th>
             <th></th>
    </tr> 
-   {% for user in users %}
+   {% for user in pb_users %}
     <tr>
         <th class=th-ranking>{{ user["ranking"] }}</th>
         <th class=th-name>{{ user["name"] }}</th>
@@ -74,7 +67,7 @@
 
 <p id="jsonified_pb_users" hidden> {{ jsonified_pb_users }}
 <p id="jsonified_smart_prediction_users" hidden> {{ jsonified_smart_prediction_users }}
-<p id="mode_p">{{mode}}</p>
+<p hidden id="mode_p">{{mode}}</p>
 {% endblock %}
 
 

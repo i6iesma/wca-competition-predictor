@@ -19,16 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("mode value is pb");
       rows = table.children[0].children;
       for (let i = 1; i < rows.length; i++) {
-        result = rows[i].children[2].innerText;
         rows[i].children[2].innerText = smart_prediction_users[i - 1].result;
+        rows[i].children[1].innerText = smart_prediction_users[i - 1].name;
         mode.innerText = "smart_prediction";
         mode_text.innerText = "By a smart prediction";
       }
     } else if (mode.innerText == "smart_prediction") {
+      console.log("mode value is smart prediction");
       rows = table.children[0].children;
       for (let i = 1; i < rows.length; i++) {
-        result = rows[i].children[2].innerText;
         rows[i].children[2].innerText = pb_users[i - 1].result;
+        rows[i].children[1].innerText = pb_users[i - 1].name;
         mode.innerText = "pb";
         mode_text.innerText = "By PB on the event specified";
       }
