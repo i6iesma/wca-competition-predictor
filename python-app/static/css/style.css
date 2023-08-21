@@ -23,6 +23,7 @@ div.title-box {
 div.title-text {
   padding-bottom: 30px;
   font-size: 20px;
+  color: white;
 }
 div.form {
   background-color: var(--secondary);
