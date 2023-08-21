@@ -159,7 +159,7 @@ def debug_user_status(users, previous_function):
     for user in users:
         print("this user has a result of " + user["result"] + " and this was called from " + previous_function)
 #Competition id is written with camelCase because of the way it is in the wca db
-def main(competitionId, event, format, mode):
+def main(competitionId, event, format):
     # Connection with the db named wca_dev
     connection = connector.connect(
         host="localhost",
@@ -171,12 +171,16 @@ def main(competitionId, event, format, mode):
     cursor.execute("use wca_dev")
     #Example code for getting user data in the pb mode
     users = get_all_users(competitionId, cursor)
-    if mode == "pb":
-        users = get_pb(users, event, format, cursor)
-    elif mode == "smart_prediction":
-        users = get_smart_prediction(users, event, format, competitionId, cursor)
-    users = sort_users(users)
-    users = fix_centiseconds(users, event)
+    #Both modes are calcultated in advance so you can change them without reloading the page
+
+    pb_users = get_pb(users, event, format, cursor)
+    pb_users = sort_users(pb_users)
+    pb_users = fix_centiseconds(pb_users, event)
+
+
+    smart_prediction_users = get_smart_prediction(users, event, format, competitionId, cursor)
+    smart_prediction_users = sort_users(smart_prediction_users)
+    smart_prediction_users = fix_centiseconds(smart_prediction_users, event)
     # Close the connection
     connection.close()
-    return users
+    return pb_users, smart_prediction_users

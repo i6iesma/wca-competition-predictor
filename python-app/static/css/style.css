@@ -1,21 +1,31 @@
 * {
   margin: 0;
   padding: 0;
+  --text: #feeeec;
+  --background: #000000;
+  --primary: #28cae6;
+  --secondary: #031330;
+  --accent: #0cf3a2;
 }
 body {
   text-align: center;
-  background-color: #f2c185;
+  background-color: var(--background);
+}
+go-submit {
+  color: black;
 }
 div.title-box {
   padding-top: 30px;
-  background-color: #0d1e40;
-  color: white;
+  background-color: var(--primary);
+  color: dark-gray;
+  padding-bottom: 0px;
 }
 div.title-text {
   padding-bottom: 30px;
+  font-size: 20px;
 }
 div.form {
-  background-color: #5b9ea6;
+  background-color: var(--secondary);
   color: white;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -31,8 +41,15 @@ div.form input {
 input[type="submit"] {
   border: 0px;
   color: white;
+  text-shadow: 0.1px 1px black;
   font-size: 40px;
-  background-color: #e27d69;
+  background-color: var(--accent);
+}
+input[type="submit"]:hover {
+  transform: scale(1.05);
+}
+input[type="submit"]:active {
+  transform: scale(0.95);
 }
 div.form select {
   width: 40%;
@@ -43,7 +60,7 @@ td,
 th {
   border-collapse: collapse;
   border: 1px solid;
-  border-color: black;
+  border-color: white;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -51,11 +68,32 @@ th {
 
 th {
   font-size: 20px;
-  color: #0d1e40;
+  color: var(--text);
 }
 th.th-ranking {
-  width: 30%;
+  width: 10%;
 }
 th.th-name {
-  width: 40%;
+  width: 60%;
+}
+img.img-arrow {
+  width: 25px;
+  height: 15px;
+}
+button.image-button {
+  /* background-color: transparent; */
+  background-color: var(--accent);
+  border: 0px;
+  margin-top: 5px;
+  padding-top: 3px;
+  display: inline-block;
+}
+button.image-button:hover {
+  transform: scale(1.1);
+}
+button.image-button:active {
+  transform: scale(0.9);
+}
+#mode-describer {
+  display: inline;
 }

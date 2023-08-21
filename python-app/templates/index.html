@@ -7,14 +7,7 @@
     <br>
     <input type="text" value="{{ url }}" name='url'></input><br>
             </br>
-<label>Select the mode you want to rank the competitors on </label>
-<br>
-<select name="mode" form="event-form">
-    <option value="pb" {% if mode == "pb" %} selected  {% endif %}>By PB on the event specified </option>
-    <option value="smart_prediction" {% if mode == "smart_prediction" %} selected  {% endif %}>By a smart prediction</option>
-</select>
 
-<br></br>
 <label class=event-form>Select the event you want to rank the competitors</label>
 <br>
 <select name="event" form="event-form">
@@ -45,28 +38,36 @@
   <option value="avg" {% if format == "avg" %} selected {% endif %}>Average</option>
 </select>
 <br></br>
-    <input type="submit" value="Go!"> </input>
+<input  type="submit" value="Go!"></input>
         </form>
     </div>
 
 <div class=div-table>
-<table>
+<table id="table-id">
    <tr>
-       <th class=th-ranking>Estimated position in event</th>
+       <th class=th-ranking>Ranking</th>
     <th class=th-name>Name</th>
-    <th class=th-pb>Result according to the mode specified<th>
+    <th   class=th-pb>
+        <button id="buttonLeft" class="image-button" type="button"><img class="img-arrow" src="/static/arrow-left.png" alt=""> </button>
+        <b id=mode-describer>{{mode_text}}</b>
+        <button id="buttonRight" class="image-button" type="button"><img class="img-arrow" src="/static/arrow-right.png" alt=""></button>
+            </th>
+            <th></th>
    </tr> 
-   {% for user in users %}
+   {% for user in pb_users %}
     <tr>
         <th class=th-ranking>{{ user["ranking"] }}</th>
         <th class=th-name>{{ user["name"] }}</th>
         <th class=th-pb>{{ user["result"] }}</th>
-
     </tr>
 
    {% endfor %}
 
 </table>
+
+<p id="jsonified_pb_users" hidden> {{ jsonified_pb_users }}
+<p id="jsonified_smart_prediction_users" hidden> {{ jsonified_smart_prediction_users }}
+<p hidden id="mode_p">{{mode}}</p>
 {% endblock %}
 
 
