@@ -1,12 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   const buttonLeft = document.getElementById("buttonLeft");
   const table = document.getElementById("table-id");
-  console.log(table);
   let mode = document.getElementById("mode_p");
   let pb_users = document.getElementById("jsonified_pb_users").innerText;
   pb_users = JSON.parse(pb_users);
   let mode_text = document.getElementById("mode-describer");
-  console.log(pb_users);
   let smart_prediction_users = document.getElementById(
     "jsonified_smart_prediction_users"
   ).innerText;
