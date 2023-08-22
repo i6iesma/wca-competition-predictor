@@ -3,10 +3,23 @@
 {% block body %}
 <div class=form>
     <form id="event-form" method="post" action="">
-    <label>Enter the wca competition url</label> 
+    <label>Search for your competition</label> 
     <br>
-    <input type="text" value="{{ url }}" name='url'></input><br>
-            </br>
+    <input placeholder="Search for your competition" value="{{competition_name}}"name="url" type="text" id="tags" />
+
+    <script>
+      $( function() {
+      	var availableTags = [
+      		{% for comp_name in comp_names %}
+      			"{{comp_name}}",
+      		{% endfor %}
+      	];
+      	$( "#tags" ).autocomplete({
+      	source: availableTags
+      	});
+      } );
+    </script>
+    <br><br>
 
 <label class=event-form>Select the event you want to rank the competitors</label>
 <br>
