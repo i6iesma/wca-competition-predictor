@@ -1,7 +1,27 @@
 import mysql.connector as connector
 import datetime
 
-
+def get_all_competitions():
+    # Connection with the db named wca_dev
+    connection = connector.connect(
+        host="localhost",
+        user="python_script_user",
+        password="python_script_user"
+    )
+    # Commands in order to use wca_dev db
+    cursor = connection.cursor(buffered=True)
+    cursor.execute("use wca_dev")
+    #This function gets all competitions returning the name and id of the comp
+    #in order to index it in the search function
+    cursor.execute("SELECT id,name from Competitions")
+    ids_names = cursor.fetchall()
+    ids = []
+    names = []
+    for id_name in ids_names:
+        ids.append(id_name[0])
+        names.append(id_name[1])
+    return ids, names 
+    connection.close()
 def get_all_users(competition_id,  cursor):
     # Get all the people ids
 
@@ -63,7 +83,14 @@ def get_smart_prediction(users, event, format, competitionId, cursor):
         if user["result"] != '':
             new_users.append(user)
     return new_users
+def get_comp_id(comp_name, cursor):
+    print(comp_name)
+    cursor.execute("select id from Competitions where name='" + comp_name + "';")
+    comp_id = str(cursor.fetchall())[3:][:-4]
+    print(str(comp_id))
+    return comp_id
 
+    
 def get_pb(users, event, format, cursor):
     new_users = []
     # Find pb single at the event and format specified
@@ -159,7 +186,7 @@ def debug_user_status(users, previous_function):
     for user in users:
         print("this user has a result of " + user["result"] + " and this was called from " + previous_function)
 #Competition id is written with camelCase because of the way it is in the wca db
-def main(competitionId, event, format):
+def main(competition_name, event, format):
     # Connection with the db named wca_dev
     connection = connector.connect(
         host="localhost",
@@ -169,6 +196,7 @@ def main(competitionId, event, format):
     # Commands in order to use wca_dev db
     cursor = connection.cursor(buffered=True)
     cursor.execute("use wca_dev")
+    competitionId = get_comp_id(competition_name, cursor)
     #Example code for getting user data in the pb mode
     users = get_all_users(competitionId, cursor)
     #Both modes are calcultated in advance so you can change them without reloading the page
@@ -184,3 +212,5 @@ def main(competitionId, event, format):
     # Close the connection
     connection.close()
     return pb_users, smart_prediction_users
+
+
