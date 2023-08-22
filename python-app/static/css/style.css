@@ -9,7 +9,8 @@
 }
 body {
   text-align: center;
-  background-color: var(--background);
+  background-image: url("/static/background-img.png");
+  background-size: 80%;
 }
 go-submit {
   color: black;
@@ -35,6 +36,11 @@ div.form {
 div.form label {
   font-size: 18px;
 }
+.div-table {
+  width: 70%;
+  margin: auto;
+  background-color: black;
+}
 div.form input {
   width: 40%;
   padding: 5px;
@@ -45,6 +51,8 @@ input[type="submit"] {
   text-shadow: 0.1px 1px black;
   font-size: 40px;
   background-color: var(--accent);
+  width: 40%;
+  border-radius: 15px;
 }
 input[type="submit"]:hover {
   transform: scale(1.05);
@@ -61,7 +69,7 @@ td,
 th {
   border-collapse: collapse;
   border: 1px solid;
-  border-color: white;
+  border-color: var(--primary);
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -88,6 +96,7 @@ button.image-button {
   margin-top: 5px;
   padding-top: 3px;
   display: inline-block;
+  border-radius: 5px;
 }
 button.image-button:hover {
   transform: scale(1.1);
