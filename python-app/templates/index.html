@@ -2,7 +2,7 @@
     
 {% block body %}
 <div class=form>
-    <form id="event-form" method="post" action="">
+    <form id="event-form" method="post" action="" >
     <label>Search for your competition</label> 
     <br>
     <input placeholder="Search for your competition" value="{{competition_name}}"name="url" type="text" id="tags" />
@@ -23,7 +23,7 @@
 
 <label class=event-form>Select the event you want to rank the competitors</label>
 <br>
-<select name="event" form="event-form">
+<select hidden name="event" form="event-form">
     <option value="333" {% if event == "333" %} selected {% endif %}>3x3x3</option>
   <option value="222" {% if event == "222" %} selected {% endif %}>2x2x2</option>
   <option value="444" {% if event == "444" %} selected {% endif %}>4x4x4</option>
@@ -42,6 +42,43 @@
   <option value="555bf" {% if event == "555bf" %} selected {% endif %}>5x5x5 Blindfolded</option>
   <option value="333mbf" {% if event == "333mbf" %} selected {% endif %}>3x3x3 Multiblind</option>
 </select>
+<div class="div-cubing-icons" name="eventimg">
+    <span id="333" class="cubing-icon event-333">
+    </span>
+    <span id="222" class="cubing-icon event-222">
+    </span>
+    <span id="444" class="cubing-icon event-444">
+    </span>
+    <span id="555" class="cubing-icon event-555">
+    </span>
+    <span id="666" class="cubing-icon event-666">
+    </span>
+    <span id="777" class="cubing-icon event-777">
+    </span>
+    <span id="333bf" class="cubing-icon event-333bf">
+    </span>
+    <span id="333fm" class="cubing-icon event-333fm">
+    </span>
+    <span id="333oh" class="cubing-icon event-333oh">
+    </span>
+    <span id="clock" class="cubing-icon event-clock">
+    </span>
+    <span id="minx" class="cubing-icon event-minx">
+    </span>
+    <span id="pyram" class="cubing-icon event-pyram">
+    </span>
+    <span id="skewb" class="cubing-icon event-skewb">
+    </span>
+    <span id="sq-1" class="cubing-icon event-sq-1">
+    </span>
+    <span id="444bf" class="cubing-icon event-444bf">
+    </span>
+    <span id="555bf" class="cubing-icon event-555bf">
+    </span>
+    <span id="333mbf" class="cubing-icon event-333mbf">
+    </span>
+</div>
+
 <br />
 <br></br>
 <label class=event-form>Select the format you want to rank the competitors on</label>
@@ -81,6 +118,7 @@
 <p id="jsonified_pb_users" hidden> {{ jsonified_pb_users }}
 <p id="jsonified_smart_prediction_users" hidden> {{ jsonified_smart_prediction_users }}
 <p hidden id="mode_p">{{mode}}</p>
+<p hidden id="event_p">{{event}}</p>
 {% endblock %}
 
 
