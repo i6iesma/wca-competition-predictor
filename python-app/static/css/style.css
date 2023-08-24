@@ -11,10 +11,7 @@
 body {
   text-align: center;
   background-image: url("/static/background-img.png");
-  background-size: 80%;
-}
-go-submit {
-  color: black;
+  background-size: 100%;
 }
 div.title-box {
   padding-top: 30px;
@@ -34,12 +31,14 @@ div.form {
 }
 
 div.form label {
-  font-size: 18px;
+  font-size: 23px;
 }
+
 .div-table {
   width: 70%;
   margin: auto;
   background-color: black;
+  overflox-x: auto;
 }
 .div-cubing-icons {
   margin: auto;
@@ -78,8 +77,8 @@ div.form label {
   transform: scale(1.1);
 }
 div.form input {
-  width: 40%;
-  padding: 5px;
+  width: 50%;
+  padding: 8px;
 }
 input[type="submit"] {
   border: 0px;

@@ -23,7 +23,7 @@ def index():
         #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
         #Get all the users already sorted
         pb_users, smart_prediction_users = backend.main(competition_name, event, format) 
-        mode_text = "By PB on the event specified"
+        mode_text = "By PB"
         ids, names = backend.get_all_competitions()
         #This is a very cheap trick which basically I take all of the user data that I need in 
         #The javascript and place it in a hidden paragraph at the end of the page so js can access it

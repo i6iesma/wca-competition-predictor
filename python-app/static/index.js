@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         rows[i].children[2].innerText = pb_users[i - 1].result;
         rows[i].children[1].innerText = pb_users[i - 1].name;
         mode.innerText = "pb";
-        mode_text.innerText = "By PB on the event specified";
+        mode_text.innerText = "By PB";
       }
     }
   }
