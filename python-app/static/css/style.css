@@ -6,6 +6,7 @@
   --primary: #28ace6;
   --secondary: #031330;
   --accent: #0cf3a2;
+  --soft-accent: #175e48;
 }
 body {
   text-align: center;
@@ -18,7 +19,6 @@ go-submit {
 div.title-box {
   padding-top: 30px;
   background-color: var(--primary);
-  color: dark-gray;
   padding-bottom: 0px;
 }
 div.title-text {
@@ -40,6 +40,42 @@ div.form label {
   width: 70%;
   margin: auto;
   background-color: black;
+}
+.div-cubing-icons {
+  margin: auto;
+  width: 50%;
+  font-size: 40px;
+}
+.div-cubing-icons span {
+  size: 50px;
+  display: inline-block;
+}
+.div-cubing-icons span:active {
+  transform: scale(0.95);
+}
+.div-cubing-icons span:hover {
+  color: var(--soft-accent);
+}
+.div-format {
+  width: 40%;
+  height: 100px;
+  margin: auto;
+  display: inline;
+}
+#button-single,
+#button-avg {
+  font-size: 20px;
+  margin: 10px;
+  width: 20%;
+  height: 30%;
+  background-color: gray;
+  border: 0px;
+  color: var(--text);
+  text-shadow: 0.1px 1px black;
+}
+#button-single:hover,
+#button-avg:hover {
+  transform: scale(1.1);
 }
 div.form input {
   width: 40%;

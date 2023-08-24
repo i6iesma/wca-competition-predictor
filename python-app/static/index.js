@@ -1,4 +1,55 @@
 document.addEventListener("DOMContentLoaded", function () {
+  let event = document.getElementById("event_p").innerText;
+  let currentEvent = document.getElementById("333");
+  const buttonSingle = document.getElementById("button-single");
+  const buttonAvg = document.getElementById("button-avg");
+  var spans = document.getElementsByTagName("span");
+  let currentFormat = document.getElementById("format_p").innerText;
+  if (currentFormat === "single") {
+    currentFormat = "single";
+    buttonAvg.style.backgroundColor = "gray";
+    buttonSingle.style.backgroundColor = "var(--soft-accent)";
+  } else {
+    currentFormat = "avg";
+    buttonSingle.style.backgroundColor = "gray";
+    buttonAvg.style.backgroundColor = "var(--soft-accent)";
+  }
+  for (i = 0; i < spans.length; i++) {
+    if (event === spans[i].id) {
+      spans[i].style.color = "var(--accent)";
+      currentEvent = spans[i];
+    }
+    spans[i].addEventListener("click", function () {
+      console.log(currentEvent);
+      try {
+        currentEvent.style.color = "";
+      } finally {
+        this.style.color = "#0cf3a2";
+        currentEvent = this;
+      }
+    });
+  }
+
+  buttonSingle.addEventListener("click", function (e) {
+    e.preventDefault();
+    currentFormat = "single";
+    buttonAvg.style.backgroundColor = "gray";
+    buttonSingle.style.backgroundColor = "var(--soft-accent)";
+  });
+  buttonAvg.addEventListener("click", function (e) {
+    e.preventDefault();
+    currentFormat = "avg";
+    buttonSingle.style.backgroundColor = "gray";
+    buttonAvg.style.backgroundColor = "var(--soft-accent)";
+  });
+
+  var form = document.getElementById("event-form");
+  form.addEventListener("submit", function () {
+    form.event.value = currentEvent.id;
+    form.format.value = currentFormat;
+    return true;
+  });
+
   const buttonLeft = document.getElementById("buttonLeft");
   const table = document.getElementById("table-id");
   let mode = document.getElementById("mode_p");
