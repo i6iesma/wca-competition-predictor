@@ -130,13 +130,19 @@ def sort_users(users):
     return users
 
 
-def fix_centiseconds(users, event):
+def fix_centiseconds(users, event, format):
     # This function will change the centiseconds format to a minutes/seconds/centiseconds format
     if event == "333mbf":
         multiblind_formatting(users, event)
         return users
     if event == "333fm":
-        return users
+        if format == "single":
+            return users
+        else:
+            for user in users:
+                print(user["result"])
+                user["result"] = str(int(user["result"]) / 100 )
+            return users
 
     for user in users:
         cs_pb = int(user["result"])
@@ -203,12 +209,12 @@ def main(competition_name, event, format):
 
     pb_users = get_pb(users, event, format, cursor)
     pb_users = sort_users(pb_users)
-    pb_users = fix_centiseconds(pb_users, event)
+    pb_users = fix_centiseconds(pb_users, event, format)
 
 
     smart_prediction_users = get_smart_prediction(users, event, format, competitionId, cursor)
     smart_prediction_users = sort_users(smart_prediction_users)
-    smart_prediction_users = fix_centiseconds(smart_prediction_users, event)
+    smart_prediction_users = fix_centiseconds(smart_prediction_users, event, format)
     # Close the connection
     connection.close()
     return pb_users, smart_prediction_users
