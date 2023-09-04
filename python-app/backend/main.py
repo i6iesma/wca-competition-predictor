@@ -5,12 +5,13 @@ def get_all_competitions():
     # Connection with the db named wca_dev
     connection = connector.connect(
         host="localhost",
-        user="python_script_user",
-        password="python_script_user"
+        user="u625102952_mysqluser",
+        ssl_disabled=True,
+        password="MysqlUser1",
     )
     # Commands in order to use wca_dev db
     cursor = connection.cursor(buffered=True)
-    cursor.execute("use wca_dev")
+    cursor.execute("use u625102952_wca_dev")
     #This function gets all competitions returning the name and id of the comp
     #in order to index it in the search function
     cursor.execute("SELECT id,name from Competitions")
@@ -194,14 +195,16 @@ def debug_user_status(users, previous_function):
 #Competition id is written with camelCase because of the way it is in the wca db
 def main(competition_name, event, format):
     # Connection with the db named wca_dev
+
     connection = connector.connect(
         host="localhost",
-        user="python_script_user",
-        password="python_script_user"
+        user="u625102952_mysqluser",
+        password="MysqlUser1",
+        ssl_disabled=True
     )
     # Commands in order to use wca_dev db
-    cursor = connection.cursor(buffered=True)
-    cursor.execute("use wca_dev")
+    cursor = connection.cursor()
+    cursor.execute("use u625102952_wca_dev")
     competitionId = get_comp_id(competition_name, cursor)
     #Example code for getting user data in the pb mode
     users = get_all_users(competitionId, cursor)
@@ -210,13 +213,21 @@ def main(competition_name, event, format):
     pb_users = get_pb(users, event, format, cursor)
     pb_users = sort_users(pb_users)
     pb_users = fix_centiseconds(pb_users, event, format)
+    results_connection = connector.connect(
+            host="localhost",
+            user="u625102952_mysqlresults",
+            password="MysqlUser1",
+            ssl_disabled=True)
 
+    results_cursor = results_connection.cursor()
+    results_cursor.execute("use u625102952_wca_results")
 
-    smart_prediction_users = get_smart_prediction(users, event, format, competitionId, cursor)
+    smart_prediction_users = get_smart_prediction(users, event, format, competitionId, results_cursor)
     smart_prediction_users = sort_users(smart_prediction_users)
     smart_prediction_users = fix_centiseconds(smart_prediction_users, event, format)
     # Close the connection
     connection.close()
+    results_connection.close()
     return pb_users, smart_prediction_users
 
 
