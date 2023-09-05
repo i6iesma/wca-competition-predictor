@@ -10,7 +10,7 @@
 }
 body {
   text-align: center;
-  background-image: url("/static/background-img.png");
+  background-image: url("/competitionresultsranking/static/background-img.png");
   background-size: 100%;
 }
 div.title-box {
