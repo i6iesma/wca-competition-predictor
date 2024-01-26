@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="static/css/style.css" rel="stylesheet" />
-    <title>Competition Predictor</title>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/cubing-icons.css" rel="stylesheet" type="text/css" />
+    <script src="/static/index.js
+        "></script>
+    <title>Competition's Results Predictor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+
+    <link
+      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet"
+      type="text/css"
+    />
     {% block head %} {% endblock %}
   </head>
   <body>
-      <div class=title-box>
-          <div class=title-text>
-    <h1 class=title >Competition PB ranking</h1>
-    <h4=title>Know how many people have a better PB than you beforehand</h4>
-          </div>
+    <div class="title-box">
+      <div class="title-text">
+        <h1 class="title">Competition Results Predictor</h1>
+        <h4 ="title">
+          Know how many people have better results than you beforehand
+        </h4>
       </div>
+    </div>
     {% block body %} {% endblock %}
   </body>
 </html>

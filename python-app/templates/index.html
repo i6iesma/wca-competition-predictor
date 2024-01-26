@@ -2,64 +2,105 @@
     
 {% block body %}
 <div class=form>
-    <form id="event-form" method="post" action="/">
-    <label>Enter the wca competition url</label> 
+    <form id="event-form" method="post" action="" >
+    <label>Search for your competition</label> 
     <br>
-            <input type="text" name='url'></input><br>
-            <br></br>
-<label class=event-form>Select the event you want to rank the competitors</label>
+    <input required placeholder="Search for your competition" value="{{competition_name}}"name="url" type="text" id="tags" />
+
+    <script>
+      $( function() {
+      	var availableTags = [
+      		{% for comp_name in comp_names %}
+      			"{{comp_name}}",
+      		{% endfor %}
+      	];
+      	$( "#tags" ).autocomplete({
+      	source: availableTags
+      	});
+      } );
+    </script>
+    <br></br>
+<label class=event-form>Select the event you want to rank the competitors on</label>
 <br>
-<select name="event" form="event-form">
-  <option value="333" >3x3x3</option>
-  <option value="222">2x2x2</option>
-  <option value="444">4x4x4</option>
-  <option value="555" >5x5x5</option>
-  <option value="666">6x6x6</option>
-  <option value="777">7x7x7</option>
-  <option value="333bf">3x3x3 Blindfolded</option>
-  <option value="333fm">3x3x3 FMC</option>
-  <option value="333oh">3x3x3 OH</option>
-  <option value="clock">Clock</option>
-  <option value="minx">Megaminx</option>
-  <option value="pyram">Pyraminx</option>
-  <option value="skewb">Skewb</option>
-  <option value="sq-1">Square-1</option>
-  <option value="444bf">4x4x4 Blindfolded</option>
-  <option value="555bf">5x5x5 Blindfolded</option>
-  <option value="333mbf">3x3x3 Multiblind</option>
-</select>
-<br />
-<br></br>
+<input hidden name="event" form="event-form"</input>
+<div class="div-cubing-icons" name="eventimg">
+    <span title="3x3x3" id="333" class="cubing-icon event-333">
+    </span>
+    <span title="2x2x2" id="222" class="cubing-icon event-222">
+    </span>
+    <span title="4x4x4" id="444" class="cubing-icon event-444">
+    </span>
+    <span title="5x5x5" id="555" class="cubing-icon event-555">
+    </span>
+    <span title="6x6x6" id="666" class="cubing-icon event-666">
+    </span>
+    <span title="7x7x7" id="777" class="cubing-icon event-777">
+    </span>
+    <span title="3x3x3 Blindfolded" id="333bf" class="cubing-icon event-333bf">
+    </span>
+    <span title="Fewest Moves Challenge" id="333fm" class="cubing-icon event-333fm">
+    </span>
+    <span title="3x3x3 One-Handed" id="333oh" class="cubing-icon event-333oh">
+    </span>
+    <span title="Clock" id="clock" class="cubing-icon event-clock">
+    </span>
+    <span title="Megaminx" id="minx" class="cubing-icon event-minx">
+    </span>
+    <span title="Pyraminx" id="pyram" class="cubing-icon event-pyram">
+    </span>
+    <span title="Skewb" id="skewb" class="cubing-icon event-skewb">
+    </span>
+    <span title="Square-1" id="sq-1" class="cubing-icon event-sq-1">
+    </span>
+    <span title="4x4x4 Blindfolded" id="444bf" class="cubing-icon event-444bf">
+    </span>
+    <span title="5x5x5 Blindfolded" id="555bf" class="cubing-icon event-555bf">
+    </span>
+    <span title="3x3x3 Multi-blindfolded" id="333mbf" class="cubing-icon event-333mbf">
+    </span>
+</div>
+
+<br>
 <label class=event-form>Select the format you want to rank the competitors on</label>
 <br>
-<select name="format" form="event-form">
-  <option value="single">Single</option>
-  <option value="avg">Average</option>
-</select>
+<input hidden name="format" form="event-form"></input>
+<div class="div-format">
+    <button id="button-single">Single</button>
+    <button id="button-avg">Average</button>
+</div>
 <br></br>
-    <input type="submit" value="Go!"> </input>
+<input  type="submit" value="Go!"></input>
         </form>
     </div>
-<br></br>
 
 <div class=div-table>
-<table>
+<table id="table-id">
    <tr>
-       <th class=th-ranking>Estimated position in event</th>
+       <th class=th-ranking>Ranking</th>
     <th class=th-name>Name</th>
-    <th class=th-pb>Pb of {{event}} in {{format}}</th>
+    <th   class=th-pb>
+        <button id="buttonLeft" class="image-button" type="button"><img class="img-arrow" src="/static/arrow-left.png" alt=""> </button>
+        <b id=mode-describer>{{mode_text}}</b>
+        <button id="buttonRight" class="image-button" type="button"><img class="img-arrow" src="/static/arrow-right.png" alt=""></button>
+            </th>
+            <th></th>
    </tr> 
-   {% for user in users %}
+   {% for user in pb_users %}
     <tr>
         <th class=th-ranking>{{ user["ranking"] }}</th>
         <th class=th-name>{{ user["name"] }}</th>
-        <th class=th-pb>{{ user["event_pb"] }}</th>
-
+        <th class=th-pb>{{ user["result"] }}</th>
     </tr>
 
    {% endfor %}
 
 </table>
+
+<p id="jsonified_pb_users" hidden> {{ jsonified_pb_users }}
+<p id="jsonified_smart_prediction_users" hidden> {{ jsonified_smart_prediction_users }}
+<p hidden id="mode_p">{{mode}}</p>
+<p hidden id="event_p">{{event}}</p>
+<p hidden id="format_p">{{format}}</p>
 {% endblock %}
 
 
