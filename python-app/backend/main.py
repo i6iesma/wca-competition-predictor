@@ -1,10 +1,13 @@
+import json
 import mysql.connector as connector
 import datetime
+
+import requests
 
 def get_all_competitions():
     # Connection with the db named wca_dev
     connection = connector.connect(
-        host="localhost",
+        host="149.100.151.204",
         user="u625102952_mysqluser",
         ssl_disabled=True,
         password="MysqlUser1",
@@ -18,39 +21,45 @@ def get_all_competitions():
     ids_names = cursor.fetchall()
     ids = []
     names = []
+    data = []
     for id_name in ids_names:
         ids.append(id_name[0])
         names.append(id_name[1])
-    return ids, names 
+        data.append({
+            "id": id_name[0],
+            "name": [id_name[1]]
+        })
+    return ids, names, data
     connection.close()
-def get_all_users(competition_id,  cursor):
+def get_all_users(competition_id):
     # Get all the people ids
+    r = requests.get("https://speedcubeapp.com/api/getCompetitors/" + competition_id)
+    users = r.json()
+    # cursor.execute("SELECT user_id FROM registrations WHERE competition_id=%(competition_id)s AND accepted_at IS NOT NULL AND deleted_at IS NULL;", {
+    #                'competition_id': competition_id})
+    # users_ids = cursor.fetchall()
+    # users = []
+    # for user_id in users_ids:
+    #     str_id = (str(user_id)[:-2][1:])
 
-    cursor.execute("SELECT user_id FROM registrations WHERE competition_id=%(competition_id)s AND accepted_at IS NOT NULL AND deleted_at IS NULL;", {
-                   'competition_id': competition_id})
-    users_ids = cursor.fetchall()
-    users = []
-    for user_id in users_ids:
-        str_id = (str(user_id)[:-2][1:])
+    #     # Find names
+    #     cursor.execute("select name from users where id='" + str_id + "'")
+    #     name = str(cursor.fetchall())[3:][:-4]
+    #     # Find wca_ids
+    #     cursor.execute("select wca_id from users where id='" + str_id + "'")
+    #     wca_id = str(cursor.fetchall())[3:][:-4]
 
-        # Find names
-        cursor.execute("select name from users where id='" + str_id + "'")
-        name = str(cursor.fetchall())[3:][:-4]
-        # Find wca_ids
-        cursor.execute("select wca_id from users where id='" + str_id + "'")
-        wca_id = str(cursor.fetchall())[3:][:-4]
-
-        user = {
-            "name": name,
-            "wca_id": wca_id,
-            # Ranking is set to 1 temporarely so that it is changed later in sort_users()
-            "ranking": 1,
-            #Result is the number which is desplayed on the web 
-            #and is set to an empty string for now, this will turn into wathever
-            #result the prediction is making
-            "result": ''
-        }
-        users.append(user)
+    #     user = {
+    #         "name": name,
+    #         "wca_id": wca_id,
+    #         # Ranking is set to 1 temporarely so that it is changed later in sort_users()
+    #         "ranking": 1,
+    #         #Result is the number which is desplayed on the web 
+    #         #and is set to an empty string for now, this will turn into wathever
+    #         #result the prediction is making
+    #         "result": ''
+    #     }
+    #     users.append(user)
     return users
 def get_smart_prediction(users, event, format, competitionId, cursor):
     new_users = []
@@ -92,15 +101,18 @@ def get_comp_id(comp_name, cursor):
     return comp_id
 
     
-def get_pb(users, event, format, cursor):
+def get_pb(users, event, format_in):
     new_users = []
+        
     # Find pb single at the event and format specified
     for user in users:
 
         if format == "single":
-            cursor.execute("select best from RanksSingle where personId='" +
-                           user["wca_id"] + "' and eventId=%(event)s;", {'event': event})
-            event_pb_format = str(cursor.fetchall())[2:][:-3]
+            # # cursor.execute("select best from RanksSingle where personId='" +
+            #                user["wca_id"] + "' and eventId=%(event)s;", {'event': event})
+            # event_pb_format = str(cursor.fetchall())[2:][:-3]
+            r = requests.get("https://raw.githubusercontent.com/robiningelbrecht/wca-rest-api/master/api/persons/" + user["wca_id"] + ".json")
+            print(r.json()["rank"][format_in][0]["best"])
         elif format == "avg":
             cursor.execute("select best from RanksAverage where personId='" +
                            user["wca_id"] + "' and eventId=%(event)s;", {'event': event})
@@ -193,26 +205,25 @@ def debug_user_status(users, previous_function):
     for user in users:
         print("this user has a result of " + user["result"] + " and this was called from " + previous_function)
 #Competition id is written with camelCase because of the way it is in the wca db
-def main(competition_name, event, format):
+def main(competitionId, event, format):
     # Connection with the db named wca_dev
 
-    connection = connector.connect(
-        host="localhost",
-        user="u625102952_mysqluser",
-        password="MysqlUser1",
-        ssl_disabled=True
-    )
+    # connection = connector.connect(
+    #     host="localhost",
+    #     user="u625102952_mysqluser",
+    #     password="MysqlUser1",
+    #     ssl_disabled=True
+    # # )
     # Commands in order to use wca_dev db
-    cursor = connection.cursor()
-    cursor.execute("use u625102952_wca_dev")
-    competitionId = get_comp_id(competition_name, cursor)
+    # cursor = connection.cursor()
+    # cursor.execute("use u625102952_wca_dev")
     #Example code for getting user data in the pb mode
-    users = get_all_users(competitionId, cursor)
+    users = get_all_users(competitionId)
     #Both modes are calcultated in advance so you can change them without reloading the page
 
-    pb_users = get_pb(users, event, format, cursor)
-    pb_users = sort_users(pb_users)
-    pb_users = fix_centiseconds(pb_users, event, format)
+    pb_users = get_pb(users, event, format )
+    # pb_users = sort_users(pb_users)
+    # pb_users = fix_centiseconds(pb_users, event, format)
     results_connection = connector.connect(
             host="localhost",
             user="u625102952_mysqlresults",
@@ -231,3 +242,4 @@ def main(competition_name, event, format):
     return pb_users, smart_prediction_users
 
 
+main("MadridNorteOpen2023", "333", "singles")

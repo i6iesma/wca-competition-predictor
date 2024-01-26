@@ -6,14 +6,20 @@ import main as backend
 app = Flask(__name__)
 application = app
 
+def findId(data, competition_name):
+    for entry in data:
+        if entry["name"][0] == competition_name:
+            return entry["id"]
 @app.route('/', methods=["POST", "GET"])
 def index():
     if request.method == "GET":
-        ids, names = backend.get_all_competitions()
+        ids, names, data = backend.get_all_competitions()
         return render_template('index.html', comp_names=names, users=[], event="", format="", len_users = 0,  url="")
     elif request.method == "POST":
-
+        
+        ids, names, data = backend.get_all_competitions()
         competition_name = request.form.get('url')
+        comp_id = findId(data, competition_name)
         format = request.form.get('format')
         event = request.form.get('event')
         #Set the text on the fields and dropdowns to the option
@@ -22,7 +28,7 @@ def index():
         #Get the users from the backend
         #Filter the competition id from url like this https://www.worldcubeassociation.org/competitions/LazarilloOpen2023
         #Get all the users already sorted
-        pb_users, smart_prediction_users = backend.main(competition_name, event, format) 
+        pb_users, smart_prediction_users = backend.main(competition_id, event, format) 
         mode_text = "By PB"
         ids, names = backend.get_all_competitions()
         #This is a very cheap trick which basically I take all of the user data that I need in 
